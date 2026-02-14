@@ -75,7 +75,7 @@ void setup() {
 
   // Ustawiamy konfigurację odtwarzacza Audio
   audio.setPinout(I2S_BCLK, I2S_LRC, I2S_DOUT); // Informujemy odtwarzacz o tym, jakich pinów ma używać
-  Audio::audio_info_callback = my_audio_info; // Opcjonalnie - funkcja wyświetla szczegóły połączenie na Serial Monitorze i tytułstreamu na wyświetlaczu
+  Audio::audio_info_callback = my_audio_info; // Opcjonalnie - funkcja wyświetla szczegóły połączenia na Serial Monitorze i tytuł streamu na wyświetlaczu
   audio.setVolume(3); // Ustawiamy głośność dźwięku (standardowy zakres 0...21)
   audio.connecttohost(stacja_url); // podłączamy się do zdefiniowanej wcześniej stacji, po czym powinniśmy uszłyszeć dżwięk (szczegóły połączenie możemy obserwować na Serial Monitorze)
 }
