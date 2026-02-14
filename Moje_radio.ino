@@ -35,7 +35,7 @@ void my_audio_info(Audio::msg_t m) {
   if (m.e == Audio::evt_streamtitle) {
     tft.setCursor(0, 140);
     tft.setTextColor(ST77XX_CYAN, ST77XX_BLACK);
-    tft.print("                                                                                                                               ");
+    tft.print("                                                                                                                               "); // Czyścimy poprzedni tytuł streamu
     tft.print(m.msg);
   }
 }
