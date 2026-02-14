@@ -33,9 +33,10 @@ char stacja_url[] = "https://rs101-krk-cyfronet.rmfstream.pl/RMFFM48"; // Adres 
 void my_audio_info(Audio::msg_t m) {
   Serial.printf("%s: %s\n", m.s, m.msg);
   if (m.e == Audio::evt_streamtitle) {
-    tft.setCursor(0, 140);
     tft.setTextColor(ST77XX_CYAN, ST77XX_BLACK);
+    tft.setCursor(0, 140);
     tft.print("                                                                                                                               "); // Czyścimy poprzedni tytuł streamu
+    tft.setCursor(0, 140);
     tft.print(m.msg);
   }
 }
