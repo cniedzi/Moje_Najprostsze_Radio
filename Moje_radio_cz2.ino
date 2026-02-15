@@ -69,6 +69,11 @@ void my_audio_info(Audio::msg_t m) {
 void setup() {
   pinMode(TFT_BL, OUTPUT); // Ustawienie pinu odpowiedzialnego za podświetlenie wyświetlacza jako wyjście
   digitalWrite(TFT_BL, HIGH); // Włączenie podświetlenia wyświetlacza
+
+  // Ustawienie pinów enkodera jako wejścia
+  pinMode(, INPUT_PULLUP);
+  pinMode(S1_EncoderL, INPUT_PULLUP);
+  pinMode(S2_EncoderL, INPUT_PULLUP);
   
   Serial.begin(115200); // Inicjalizacja monitora portu szeregowego, tj. Serial Monitor
   delay(2000); // Czekamy 2 sekundy na ustabilizowanie portu szeregowego
