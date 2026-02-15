@@ -70,7 +70,7 @@ void setup() {
   pinMode(TFT_BL, OUTPUT); // Ustawienie pinu odpowiedzialnego za podświetlenie wyświetlacza jako wyjście
   digitalWrite(TFT_BL, HIGH); // Włączenie podświetlenia wyświetlacza
 
-  // Ustawienie pinów enkodera jako wejścia
+  // Ustawienie pinów enkodera jako wejść
   pinMode(, INPUT_PULLUP);
   pinMode(S1_EncoderL, INPUT_PULLUP);
   pinMode(S2_EncoderL, INPUT_PULLUP);
