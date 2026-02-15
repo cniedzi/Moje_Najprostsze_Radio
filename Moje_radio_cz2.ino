@@ -126,13 +126,13 @@ void loop() {
                                                                                                       // WAŻNE: ustawiliśmy też czarny kolor tła czcionki, dzięki czemu poprzednia wartość będzie wymazywana,
                                                                                                       // a format wyświetlania "%02d" powoduje, że zawsze wyświetlana jest liczba 2-cyfrowa, np. 01,
                                                                                                       // dzięki czemu przy przejściu z liczby 10 na 9 nie pozostanie stara nadmiarowa cyfra 0.
-    Serial.printf("Volume: %d\n", g_Volume); 
+    Serial.printf("Volume: %d\n", g_Volume); // wyświetlamy aktualną głośność na Serial Monitorze
   }
   else if (result == DIR_CCW) { // Jeżeli obrót przeciwnie do ruchu wskazówek zegara, to...
-    if (g_Volume > VOLUME_MIN) g_Volume--; // jeżeli aktualna głośność jest mniejsza niż wartość maksymalna, zwiększ Volume o 1
+    if (g_Volume > VOLUME_MIN) g_Volume--; // jeżeli aktualna głośność jest większa niż wartość minimalna, zmniejsz Volume o 1
     audio.setVolume(g_Volume); // ustawiamy wartość g_Volume jako aktualną głośność radia
     tft.setTextColor(ST77XX_WHITE, ST77XX_BLACK); tft.setCursor(96, 225); tft.printf("%02d", g_Volume); // analogicznie dla obrotu enkodera DIR_CW
-    Serial.printf("Volume: %d\n", g_Volume); 
+    Serial.printf("Volume: %d\n", g_Volume); // wyświetlamy aktualną głośność na Serial Monitorze
   }
   // --------- E N K O D E R + G Ł O Ś N O Ś Ć -----------//
 
