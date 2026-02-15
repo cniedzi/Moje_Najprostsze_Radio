@@ -71,7 +71,6 @@ void setup() {
   digitalWrite(TFT_BL, HIGH); // Włączenie podświetlenia wyświetlacza
 
   // Ustawienie pinów enkodera jako wejść
-  pinMode(, INPUT_PULLUP);
   pinMode(S1_EncoderL, INPUT_PULLUP);
   pinMode(S2_EncoderL, INPUT_PULLUP);
   
