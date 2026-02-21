@@ -358,8 +358,8 @@ void powrotDoGlownegoEkranu() {
   char cSampleRate[10]; // zmienna pomocnicza
   snprintf(cSampleRate, sizeof(cSampleRate), "%dHz", g_sampleRate); // Format wyświetlania "%02d" powoduje, że zawsze wyświetlana jest liczba 2-cyfrowa, np. 01
   tft.drawString(cSampleRate, 0, 100); // wyświetlamy Sample Rate (np. 44100, 48000, etc.) na pozycji (0, 100)
+  
   tft.loadFont(Lato_Bold_22); // Przywracamy czcionkę Lato_Bold_22
-
   tft.setTextColor(TFT_CYAN); // Ustawiamy kolor tekstu na cyjanowy
   int tytulStreamu_Y; // Zmienna, w której będziemy przechowywać współrzędną pionową Y tytułu streamu
   int wysokoscTytuluStreamu = obliczWysokoscTekstu(g_streamTitle); // Obliczamy całkowitą wysokość tytułu streamu, także wieloliniowego 
@@ -374,11 +374,20 @@ void powrotDoGlownegoEkranu() {
   wyswietlStatusWiFi(); // Wyświetlamy status WiFi
   wyswietlNazweWiFi(); // Wyswietlamy nazwę stacji WiFi
   
-  tft.setTextColor(VOLUME_KOLOR); //Ustawiamy kolor tekstu na VOLUME_KOLOR
-  tft.setTextDatum(BL_DATUM); // Ustawiamy punkt kotwiczenia tekstu (dolny lewy wierzchołek tekstu)
-  char cVol[7]; // zmienna pomocnicza
-  snprintf(cVol, sizeof(cVol), "Vol:%02d", g_Volume); // Format wyświetlania "%02d" powoduje, że zawsze wyświetlana jest liczba 2-cyfrowa, np. 01
-  tft.drawString(cVol, 0, 240); // Wyświetlamy aktualną wartość głośności na pozycji (48, 225);
+  if (!g_Mute) {
+    tft.setTextColor(VOLUME_KOLOR); //Ustawiamy kolor tekstu na VOLUME_KOLOR
+    tft.setTextDatum(BL_DATUM); // Ustawiamy punkt kotwiczenia tekstu (dolny lewy wierzchołek tekstu)
+    char cVol[7]; // zmienna pomocnicza
+    snprintf(cVol, sizeof(cVol), "Vol:%02d", g_Volume); // Format wyświetlania "%02d" powoduje, że zawsze wyświetlana jest liczba 2-cyfrowa, np. 01
+    tft.drawString(cVol, 0, 240); // Wyświetlamy aktualną wartość głośności na pozycji (48, 225);
+  }
+  else {
+    tft.setTextColor(TFT_WHITE, TFT_RED); // Zmieniamy kolor czcionki na biały na czerwonym tle
+    tft.setTextDatum(BL_DATUM); // Ustawiamy punkt kotwiczenia tekstu (dolny lewy wierzchołek tekstu)
+    char cVol[7]; // zmienna pomocnicza
+    snprintf(cVol, sizeof(cVol), "Vol:%02d", g_Volume); // Format wyświetlania "%02d" powoduje, że zawsze wyświetlana jest liczba 2-cyfrowa, np. 01
+    tft.drawString(cVol, 0, 240); // Wyświetlamy aktualną wartość głośności na pozycji (48, 225);
+  }
 }
 
 
@@ -442,10 +451,10 @@ void setup() {
   // -------- P R E F E R E N C E S --------//
 
   WiFi.begin("nazwa_sieci_wifi", "hasło_sieci_wifi"); // Podłączenie do sieci WiFi -> WAŻNE: trzeba wpisać swoje parametry sieci WiFi
-    
+  //WiFi.begin(); 
+  
   spi.begin(TFT_SCLK, -1, TFT_MOSI, TFT_CS); // Inicjalizacja interfejsu SPI
-  
-  
+    
   
   tft.init(); // Inicjalizacja wyświetlacza
   tft.setSwapBytes(true); // Dostosowanie poprawnego wyświetlania bitmap;
@@ -577,15 +586,15 @@ void loop() {
 
 
   // --------- E N K O D E R + G Ł O Ś N O Ś Ć -----------//
-  if (!g_Mute) {
-    unsigned char result_L = EncL.process(); // sprawdzamy stan lewego enkodera
-    if (result_L != DIR_NONE) { // Jeżeli przekręciliśmy lewy enkoder w dowolną stronę 
+  unsigned char result_L = EncL.process(); // sprawdzamy stan lewego enkodera
+  if (result_L != DIR_NONE) { // Jeżeli przekręciliśmy lewy enkoder w dowolną stronę 
       if (g_trybPracyRadia != MODE_MAIN) { // i nie jesteśmy w trybie głównego ekranu, to
         g_trybPracyRadia = MODE_MAIN; // przechodzimy do trybu głównego ekranu
         powrotDoGlownegoEkranu(); // i wyświetlamy niezbędne elementy głównego ekranu
       }
       g_czasStartWygaszaczTimeout = millis(); // Aktualizujemy zmienną przechowującą moment, w którym rozpoczęło się odliczanie czasu do aktywacji wygaszacza
-    }
+    }  
+  if (!g_Mute) {
     if (result_L == DIR_CW && g_Volume < VOLUME_MAX) { // Jeżeli obrót zgodnie z ruchem wskazówek zegara i aktualna głośność jest mniejsza niż wartość maksymalna, to
       g_Volume++; // zwiększ Volume o 1
       g_aktywnaZmianaVolume = true; //Jesteśmy w trakcie zmiany głośności
