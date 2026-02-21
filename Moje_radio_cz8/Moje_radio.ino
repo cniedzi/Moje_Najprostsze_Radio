@@ -338,7 +338,7 @@ void setup() {
   // ---------- ST7789 ----------//
   
   // ---------- ILI9341 ---------//
-  //tft.init(); // Inicjalizacja wyświetlacza ST7789
+  //tft.init(); // Inicjalizacja wyświetlacza ILI9341
   //tft.setRotation(1); // Dopasowanie obrotu obrazu
   //tft.setSwapBytes(true); // Dostosowanie poprawnego wyświetlania bitmap
   // ---------- ILI9341 ---------//
