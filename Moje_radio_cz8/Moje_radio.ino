@@ -350,7 +350,7 @@ void setup() {
   tft.fillScreen(TFT_BLACK); // Czyścimy ekran - kolor czarny
 
   // --------------------- L O G O -----------------------//
-  // Do wyświetlania bitmap będziemy używać funkcji z biblioteki Adafruit GFX:
+  // Do wyświetlania bitmap będziemy używać funkcji z biblioteki LovyanGFX:
   // pushImage(x_lewy_górny_wierzchołek_logo, y__lewy_górny_wierzchołek_logo, szerokosc_bitmapy, wysokosc_bitmapy, *bitmapa);
   tft.setTextColor(TFT_ORANGE); // Ustawiamy kolor czcionki wyświetlacza
   tft.setTextDatum(TC_DATUM); // Ustawiamy punkt kotwiczenia tekstu (górny środek tekstu)
