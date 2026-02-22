@@ -28,9 +28,7 @@
 // ---------------- W Y G A S Z A C Z -------------------//
 
 // --------- A N A L I Z A T O R   W I D M A ------------//
-//extern "C" { 
-  #include "fft.h" // FFT by Robin Scheibler (http://www.robinscheibler.org)
-//}
+#include "fft.h" // FFT by Robin Scheibler (http://www.robinscheibler.org)
 // --------- A N A L I Z A T O R   W I D M A ------------//
 
 // Tutaj definiujemy piny, których użyliśmy do podłączenia PCM5102A
