@@ -53,7 +53,7 @@
 // Definicje zakresu głośności
 #define VOLUME_MIN 0
 #define VOLUME_MAX 21
-#define VOLUME_KOLOR 0xf492 // https://rgbcolorpicker.com/565 <- tytaj można sprawdzać kody doowolnych kolorów RGB565 (3 pole tekstowe)
+#define VOLUME_KOLOR 0xf492 // https://rgbcolorpicker.com/565 <- tutaj można sprawdzać kody doowolnych kolorów RGB565 (3 pole tekstowe)
 // ----------------- G Ł O Ś N O Ś Ć -------------------//
 
 // ----------------------- V U -------------------------//
