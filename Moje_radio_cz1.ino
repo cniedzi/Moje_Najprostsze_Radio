@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Cezary Niedziński
+// Licensed under the Polyform Noncommercial License 1.0.0.
+
 // W Arduino IDE musimy zainstalować biblioteki:
 // 1. ESP32-audioI2S
 // 2. Adafruit GFX Library
