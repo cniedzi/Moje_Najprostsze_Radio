@@ -456,10 +456,17 @@ void wyswietlObraz() {
 
 
 
+/*************************** U W A G A ***************************/
+//
+// W zależności od posiadanej wersji biblioteki ESP32-audioI2S (16 lub 32-bitowej)
+// trzeba odkomentować właściwą funkcję
+//
 
-
-
-// Funkcja zwraca próbki I2S dźwięku 
+//
+// U W A G A: Poniższa wersja funkcji audio_process_i2s wymaga
+//            16-bitowej biblioteki ESP32-audioI2S 
+//
+// Funkcja zwraca próbki I2S dźwięku
 void audio_process_i2s(int16_t* outBuff, int32_t validSamples, bool* continueI2S) {
   if (g_trybPracyRadia == MODE_SPECTRUM_ANALYZER_1 || g_trybPracyRadia == MODE_SPECTRUM_ANALYZER_2) { // Jeżeli jestesmy w trybie analizatora widma
     if (validSamples >= 2 * SIZE_OF_FFT) {          // i dostępnych jest więcej lub równo 2*SIZE_OF_FFT próbek, to
@@ -475,6 +482,31 @@ void audio_process_i2s(int16_t* outBuff, int32_t validSamples, bool* continueI2S
   *continueI2S = true; // Dajemy znać bibliotece Audio I2S, że może przesyłać próbki dźwięku dalej, czyli do DACa
 }
 
+
+
+
+// U W A G A: Poniższa wersja funkcji audio_process_i2s wymaga
+//            32-bitowej biblioteki ESP32-audioI2S 
+/*
+// Funkcja zwraca próbki I2S dźwięku
+void audio_process_i2s(int32_t* outBuff, int16_t validSamples, bool* continueI2S) {
+  if (g_trybPracyRadia == MODE_SPECTRUM_ANALYZER_1 || g_trybPracyRadia == MODE_SPECTRUM_ANALYZER_2) { // Jeżeli jestesmy w trybie analizatora widma
+    if (validSamples >= 2 * SIZE_OF_FFT) {          // i dostępnych jest więcej lub równo 2*SIZE_OF_FFT próbek, to
+      while (g_calculateFFT_Copy_In_Progress == true) { vTaskDelay(1); } // Jeżeli trwa kopiowanie danych w funkcji calculateFFT,
+                                                                         // to czekamy na jego zakończenie.
+      g_audio_process_i2s_Copy_In_Progress = true; // Ustawienie blokady kopiowania danych dla funkcji calculateFFT
+      for (size_t i = 0; i < 2 * SIZE_OF_FFT; i++) {
+        bufferI2S[i] = (int16_t)((*outBuff) >> 16);
+        outBuff++; 
+      }
+	    g_audio_process_i2s_Copy_In_Progress = false; // Zdjęcie blokady kopiowania danych dla funkcji calculateFFT
+    }  
+  }
+  *continueI2S = true; // Dajemy znać bibliotece Audio I2S, że może przesyłać próbki dźwięku dalej, czyli do DACa
+}
+*/
+
+/*************************** U W A G A ***************************/
 
 
 
