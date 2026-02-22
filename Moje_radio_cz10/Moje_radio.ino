@@ -71,8 +71,8 @@
 
 
 // ---------------- W Y G A S Z A C Z -------------------//
-#define WYGASZACZ_TIMEOUT 60000 // Definicja czasu w ms, po którym aktywuje się wygaszacz
-#define WYGASZACZ_IMAGE_DURATION 10000 // Definicja czasu w ms, po którym wyswietlony zostanie kolejny obraz wygaszacza ekranu
+#define WYGASZACZ_TIMEOUT 60000 // Definicja czasu w [ms], po którym aktywuje się wygaszacz
+#define WYGASZACZ_IMAGE_DURATION 10000 // Definicja czasu w [ms], po którym wyswietlony zostanie kolejny obraz wygaszacza ekranu
 // ---------------- W Y G A S Z A C Z -------------------//
 
 
@@ -158,6 +158,9 @@ unsigned long g_czasOstatniegoStatusuWiFi = millis(); // Zmienna, w której będ
 
 
 // --------- A N A L I Z A T O R   W I D M A ------------//
+volatile bool g_audio_process_i2s_Copy_In_Progress = false;
+volatile bool g_calculateFFT_Copy_In_Progress = false;
+
 int16_t bufferI2S[2 * SIZE_OF_FFT] = {0};
 unsigned long g_czasStartWyswietlAnalizatorWidma = millis(); // Zmienna globalna przechowująca moment (w ms od uruchomienia radia), w którym wyświetlono ostatni obraz wygaszacza ekranu
 float spectrum[SIZE_OF_FFT / 2];
@@ -460,9 +463,13 @@ void wyswietlObraz() {
 void audio_process_i2s(int16_t* outBuff, int32_t validSamples, bool* continueI2S) {
   if (g_trybPracyRadia == MODE_SPECTRUM_ANALYZER_1 || g_trybPracyRadia == MODE_SPECTRUM_ANALYZER_2) { // Jeżeli jestesmy w trybie analizatora widma
     if (validSamples >= 2 * SIZE_OF_FFT) {          // i dostępnych jest więcej lub równo 2*SIZE_OF_FFT próbek, to
+      while (g_calculateFFT_Copy_In_Progress == true) { vTaskDelay(1); } // Jeżeli trwa kopiowanie danych w funkcji calculateFFT,
+                                                                         // to czekamy na jego zakończenie.
+      g_audio_process_i2s_Copy_In_Progress = true; // Ustawienie blokady kopiowania danych dla funkcji calculateFFT
       memcpy(bufferI2S, outBuff, 2 * SIZE_OF_FFT * sizeof(int16_t)); //kopiujemy próbki do naszej tablicy "bufferI2S",
                                                                      // która posłuży do obliczania transformaty FFT.
                                                                      // Tablica zawiera naprzemiennie próbki kanału lewego i prawego.
+      g_audio_process_i2s_Copy_In_Progress = false; // Zdjęcie blokady kopiowania danych dla funkcji calculateFFT
     }  
   }
   *continueI2S = true; // Dajemy znać bibliotece Audio I2S, że może przesyłać próbki dźwięku dalej, czyli do DACa
@@ -478,12 +485,18 @@ void audio_process_i2s(int16_t* outBuff, int32_t validSamples, bool* continueI2S
 void calculateFFT() {
   int fftIndex = 0;
 	float fftInput[SIZE_OF_FFT]; // Tablica wejściowa do obliczenia transformaty FFT 
+  
+  while (g_audio_process_i2s_Copy_In_Progress == true) { vTaskDelay(1); } // Jeżeli trwa kopiowanie danych dźwięku I2S w funkcji audio_process_i2s,
+                                                                          // to czekamy na jego zakończenie
+  g_calculateFFT_Copy_In_Progress = true; // Ustawienie blokady kopiowania danych dla funkcji audio_process_i2s
   for (int i = 0; i < 2 * SIZE_OF_FFT; i += 2) { // Iterujemy po wszystkich próbkach dźwięku, tj. kanał L i P
     int16_t left = bufferI2S[i]; // Bierzemy próbkę kanału lewego
     int16_t right = bufferI2S[i + 1]; // Bierzemy próbkę kanału prawego 
     float mono = (left + right) / 2.0f; // Liczymy uśrednioną próbkę mono
     fftInput[fftIndex++] = mono; // Zapisujemy próbkę mono do tablicy wejściowej do obliczenia transformaty FFT
   }
+  g_calculateFFT_Copy_In_Progress = false; // Zdjęcie blokady kopiowania danych dla funkcji audio_process_i2s
+  
   // Skopiuj dane do bufora wejściowego FFT
   for (int i = 0; i < SIZE_OF_FFT; i++) { // Iterujemy po wszystkich próbkach mono
     float window = 0.54f - 0.46f * cosf(2.0f * M_PI * i / (SIZE_OF_FFT - 1));  // Przed obliczeniem FFT, stosujemy okno Hamminga
