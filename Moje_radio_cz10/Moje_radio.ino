@@ -5,6 +5,8 @@
 // 1. ESP32-audioI2S
 // 2. Adafruit GFX Library
 // 3. LovyanGFX
+// 4. FFT by Robin Scheibler (http://www.robinscheibler.org)
+
 #include <WiFi.h>
 #include <Preferences.h>
 #include "Audio.h" // (https://github.com/schreibfaul1/ESP32-audioI2S)
