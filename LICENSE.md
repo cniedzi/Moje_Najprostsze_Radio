@@ -1,28 +1,28 @@
 # Polyform Noncommercial License 1.0.0
 
-#Acceptance
+## Acceptance
 By using this software, you agree to its terms. If you do not agree, you have no right to use this software.
 
-Copyright License
+## Copyright License
 The licensor grants you a non-exclusive, royalty-free, worldwide, non-transferable license to use, copy, modify, and distribute this software for noncommercial purposes only.
 
-Patent License
+## Patent License
 The licensor grants you a non-exclusive, royalty-free, worldwide, non-transferable patent license to make, have made, use, sell, offer for sale, and import the software, where the license applies only to those patent claims licensable by the licensor that are embodied by the software as distributed by the licensor, for noncommercial purposes only.
 
-Noncommercial Purposes
+## Noncommercial Purposes
 Noncommercial purposes include any use of the software that is not directed toward commercial advantage or monetary compensation. Personal use, educational use, and research use are examples of noncommercial purposes.
 
-Redistribution
+## Redistribution
 You may redistribute the software, with or without modification, provided that you include this license and any copyright notices with any copy of the software.
 
-Notices
+## Notices
 You must ensure that any copy of the software you distribute includes a copy of this license.
 
-No Other Rights
+## No Other Rights
 This license does not grant any other rights, including rights to use any trademark, service mark, or logo.
 
-Termination
+## Termination
 If you violate any term of this license, your rights under this license terminate immediately.
 
-Disclaimer of Warranties
+## Disclaimer of Warranties
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
