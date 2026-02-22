@@ -37,8 +37,8 @@ Sell hardware devices (radio receivers) with this software pre-installed without
 
 Use this project for any commercial or profit-making activity.
 
-[!IMPORTANT]
-The full legal text is available in the LICENSE file. By using, downloading, or modifying this project, you agree to these terms.
+> [!IMPORTANT]
+> The full legal text is available in the LICENSE file. By using, downloading, or modifying this project, you agree to these terms.
 
 
 
