@@ -1,6 +1,6 @@
 ## 📜 Licencja i Zasady Użytkowania
 
-Ten projekt (Oprogramowanie Najprostszego Radia Internetowego) jest udostępniany na licencji **Polyform Noncommercial License 1.0.0**.
+Ten projekt (Najprostszeo Radio Internetowe) jest udostępniany na licencji **Polyform Noncommercial License 1.0.0**.
 
 ### ✅ Co MOŻESZ robić:
 * Pobierać, kompilować i używać kodu do celów prywatnych.
@@ -14,7 +14,33 @@ Ten projekt (Oprogramowanie Najprostszego Radia Internetowego) jest udostępnian
 * Wykorzystywać projektu w jakiejkolwiek działalności komercyjnej lub zarobkowej.
 
 > [!IMPORTANT]
-> Pełna treść licencji znajduje się w pliku [LICENSE](LICENSE). Korzystając z tego projektu, akceptujesz jej warunki.
+> Pełna treść licencji znajduje się w pliku LICENSE. Korzystając z tego projektu, akceptujesz jej warunki.
+
+<br><br>
+
+### 📜 License and Terms of Use
+This project (Najprostszeo Radio Internetowe) is released under the Polyform Noncommercial License 1.0.0.
+
+✅ What you CAN do:
+Download, compile, and use the code for your personal, private enjoyment.
+
+Modify the code to fit your needs (e.g., tweaking the UI, adding custom stations).
+
+Share your improvements with the community, as long as you provide attribution to the original author and use the same non-commercial license.
+
+Learn from the code and use snippets in other free, non-commercial projects.
+
+### ❌ What you CANNOT do:
+Sell this code or any part of it.
+
+Sell hardware devices (radio receivers) with this software pre-installed without my explicit written permission.
+
+Use this project for any commercial or profit-making activity.
+
+[!IMPORTANT]
+The full legal text is available in the LICENSE file. By using, downloading, or modifying this project, you agree to these terms.
+
+
 
 ---
 © 2026 Cezary Niedziński
