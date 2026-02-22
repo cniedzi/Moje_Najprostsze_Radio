@@ -71,8 +71,8 @@
 
 
 // ---------------- W Y G A S Z A C Z -------------------//
-#define WYGASZACZ_TIMEOUT 60000 // Definicja okresu czasu, po którym aktywuje się wygaszacz
-#define WYGASZACZ_IMAGE_DURATION 10000 // Definicja okresu czasu, po którym wyswietlony zostanie kolejny obraz wygaszacza ekranu
+#define WYGASZACZ_TIMEOUT 60000 // Definicja czasu w ms, po którym aktywuje się wygaszacz
+#define WYGASZACZ_IMAGE_DURATION 10000 // Definicja czasu w ms, po którym wyswietlony zostanie kolejny obraz wygaszacza ekranu
 // ---------------- W Y G A S Z A C Z -------------------//
 
 
