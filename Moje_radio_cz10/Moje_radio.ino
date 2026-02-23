@@ -500,7 +500,7 @@ void audio_process_i2s(int32_t* outBuff, int16_t validSamples, bool* continueI2S
       for (size_t i = 0; i < 2 * SIZE_OF_FFT; i++) {
         bufferI2S[i] = buff16[i * 2 + 1];
       }
-	    g_audio_process_i2s_Copy_In_Progress = false; // Zdjęcie blokady kopiowania danych dla funkcji calculateFFT
+	  g_audio_process_i2s_Copy_In_Progress = false; // Zdjęcie blokady kopiowania danych dla funkcji calculateFFT
     }  
   }
   *continueI2S = true; // Dajemy znać bibliotece Audio I2S, że może przesyłać próbki dźwięku dalej, czyli do DACa
