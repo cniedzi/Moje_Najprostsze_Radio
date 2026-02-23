@@ -467,6 +467,7 @@ void wyswietlObraz() {
 //            16-bitowej biblioteki ESP32-audioI2S 
 //
 // Funkcja zwraca próbki I2S dźwięku
+
 void audio_process_i2s(int16_t* outBuff, int32_t validSamples, bool* continueI2S) {
   if (g_trybPracyRadia == MODE_SPECTRUM_ANALYZER_1 || g_trybPracyRadia == MODE_SPECTRUM_ANALYZER_2) { // Jeżeli jestesmy w trybie analizatora widma
     if (validSamples >= 2 * SIZE_OF_FFT) {          // i dostępnych jest więcej lub równo 2*SIZE_OF_FFT próbek, to
@@ -495,9 +496,9 @@ void audio_process_i2s(int32_t* outBuff, int16_t validSamples, bool* continueI2S
       while (g_calculateFFT_Copy_In_Progress == true) { vTaskDelay(1); } // Jeżeli trwa kopiowanie danych w funkcji calculateFFT,
                                                                          // to czekamy na jego zakończenie.
       g_audio_process_i2s_Copy_In_Progress = true; // Ustawienie blokady kopiowania danych dla funkcji calculateFFT
+      int16_t* buff16 = reinterpret_cast<int16_t*>(outBuff);
       for (size_t i = 0; i < 2 * SIZE_OF_FFT; i++) {
-        bufferI2S[i] = (int16_t)((*outBuff) >> 16);
-        outBuff++; 
+        bufferI2S[i] = buff16[i * 2 + 1];
       }
 	    g_audio_process_i2s_Copy_In_Progress = false; // Zdjęcie blokady kopiowania danych dla funkcji calculateFFT
     }  
@@ -516,31 +517,24 @@ void audio_process_i2s(int32_t* outBuff, int16_t validSamples, bool* continueI2S
 // i zapisuje wynik w tablicy spectrum, która posłuży do rysowania Analizatora Widma
 void calculateFFT() {
   int fftIndex = 0;
-	float fftInput[SIZE_OF_FFT]; // Tablica wejściowa do obliczenia transformaty FFT 
-  
-  while (g_audio_process_i2s_Copy_In_Progress == true) { vTaskDelay(1); } // Jeżeli trwa kopiowanie danych dźwięku I2S w funkcji audio_process_i2s,
-                                                                          // to czekamy na jego zakończenie
-  g_calculateFFT_Copy_In_Progress = true; // Ustawienie blokady kopiowania danych dla funkcji audio_process_i2s
-  for (int i = 0; i < 2 * SIZE_OF_FFT; i += 2) { // Iterujemy po wszystkich próbkach dźwięku, tj. kanał L i P
-    int16_t left = bufferI2S[i]; // Bierzemy próbkę kanału lewego
-    int16_t right = bufferI2S[i + 1]; // Bierzemy próbkę kanału prawego 
-    float mono = (left + right) / 2.0f; // Liczymy uśrednioną próbkę mono
-    fftInput[fftIndex++] = mono; // Zapisujemy próbkę mono do tablicy wejściowej do obliczenia transformaty FFT
+	float fftInput[SIZE_OF_FFT];
+
+  for (int i = 0; i < SIZE_OF_FFT; i++) {
+    int16_t left = bufferI2S[i * 2];
+    int16_t right = bufferI2S[i * 2 + 1];
+    float mono = (left + right) * 0.5f;
+    // Okno Hamminga
+    float window = 0.54f - 0.46f * cosf(2.0f * M_PI * i / (SIZE_OF_FFT - 1));
+    fftCfg->input[i] = mono * window;
   }
-  g_calculateFFT_Copy_In_Progress = false; // Zdjęcie blokady kopiowania danych dla funkcji audio_process_i2s
-  
-  // Skopiuj dane do bufora wejściowego FFT
-  for (int i = 0; i < SIZE_OF_FFT; i++) { // Iterujemy po wszystkich próbkach mono
-    float window = 0.54f - 0.46f * cosf(2.0f * M_PI * i / (SIZE_OF_FFT - 1));  // Przed obliczeniem FFT, stosujemy okno Hamminga
-    fftCfg->input[i] = fftInput[i] * window; // j.w.
-	}
-  fft_execute(fftCfg); // Obliczamy FFT
-  // Obliczamy amplitudy widma i zapisujemy w tablicy spectrum
-  for (int i = 0; i < SIZE_OF_FFT / 2; i++) { // Bierzemy tylko połowę wyniku fransformaty FFT, ponieważ dla danych audio
-                                              // druga połowa transformaty FFT jest symetrycznym odbiciem pierwszej połowy
-    float real = fftCfg->output[i * 2]; // Obliczamy składową rzeczywistą wyniku transformaty FFT
-    float imag = fftCfg->output[i * 2 + 1]; // Obliczamy składową urojoną wyniku transformaty FFT
-    spectrum[i] = sqrtf(real * real + imag * imag); // Obliczamy amplitudę widma
+
+  // Uruchom FFT
+  fft_execute(fftCfg);
+  // Oblicz amplitudy i zapisz do tablicy spectrum[]
+  for (int i = 0; i < SIZE_OF_FFT / 2; i++) {
+    float real = fftCfg->output[i * 2];
+    float imag = fftCfg->output[i * 2 + 1];
+    spectrum[i] = sqrtf(real * real + imag * imag);
   }
 }
 
@@ -578,7 +572,7 @@ void setup() {
   g_Stacja = preferences.getUChar("stacja", 0); // odczyt zapisanej w pamięci Flash ostatnio wybranej stacji (odczyt liczby dodatniej 8-bitowej); jeżeli nic nie zapisano zwracana jest wartość 0 (czyli pierwsza stacja).
   // -------- P R E F E R E N C E S --------//
 
-  WiFi.begin("nazwa_sieci_wifi", "hasło_sieci_wifi"); // Podłączenie do sieci WiFi -> WAŻNE: trzeba wpisać swoje parametry sieci WiFi
+  //WiFi.begin("nazwa_sieci_wifi", "hasło_sieci_wifi"); // Podłączenie do sieci WiFi -> WAŻNE: trzeba wpisać swoje parametry sieci WiFi
   
   spi.begin(TFT_SCLK, -1, TFT_MOSI, TFT_CS); // Inicjalizacja interfejsu SPI
     
